@@ -107,7 +107,7 @@ export default {
       this.$parent.$children.forEach(el => {
         if (el.id !== id) {
           const comp = el.$refs[el.id]
-          if (!comp.isHidden) {
+          if (comp && !comp.isHidden) {
             comp.isHidden = true
           }
         }

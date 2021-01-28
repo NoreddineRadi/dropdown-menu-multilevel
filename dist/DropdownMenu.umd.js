@@ -1398,12 +1398,12 @@ if (typeof window !== 'undefined') {
 // Indicate to webpack that this file can be concatenated
 /* harmony default export */ var setPublicPath = (null);
 
-// CONCATENATED MODULE: C:/Users/admin/AppData/Roaming/nvm/v12.13.0/node_modules/@vue/cli-service-global/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"7f677d1a-vue-loader-template"}!C:/Users/admin/AppData/Roaming/nvm/v12.13.0/node_modules/@vue/cli-service-global/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./TreeNode.vue?vue&type=template&id=3fc1d1d6&
+// CONCATENATED MODULE: C:/Users/admin/AppData/Roaming/nvm/v12.13.0/node_modules/@vue/cli-service-global/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"7f677d1a-vue-loader-template"}!C:/Users/admin/AppData/Roaming/nvm/v12.13.0/node_modules/@vue/cli-service-global/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./TreeNode.vue?vue&type=template&id=09ee1465&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('dropdown',{ref:_vm.id,attrs:{"role":_vm.role,"align":_vm.align,"x":_vm.offsetX,"y":_vm.offsetY,"trigger":_vm.trigger,"isIcon":!_vm.hideIcon,"class-name":_vm.className}},[_c('template',{staticClass:"cursor-pointer d-flex",slot:"btn"},[(_vm.$slots.btn)?_vm._t("btn"):_c('div',{staticClass:"flex-fill",on:{"click":function($event){return _vm.clickOnButton(_vm.id)}}},[_vm._v(" "+_vm._s(_vm.label)+" ")])],2),_c('template',{slot:"body"},[(_vm.$slots.body)?_vm._t("body"):_c('div',_vm._l((_vm.list),function(el,index){return _c('div',{key:el+index},[_c('div',{staticClass:"text-left d-flex align-items-center cursor-pointer p-1"},[_c('span',{staticClass:"material-icons mr-2"},[_vm._v(_vm._s(el.icon))]),(el.children.length)?_c('TreeNode',{attrs:{"id":el.label,"list":el.children,"label":el.label,"offsetX":el.offsetX || _vm.offsetX,"offsetY":el.offsetY || _vm.offsetY,"align":("" + (el.align || _vm.align)),"hideIcon":el.hideIcon || false,"className":el.className || _vm.className,"trigger":_vm.trigger},on:{"clickOnButton":function($event){return _vm.clickOnButton(_vm.id)},"clickOnItem":function($event){return _vm.clickOnItem($event)}}}):_c('div',{class:_vm.className,on:{"click":function($event){return _vm.clickOnItem(el.label)}}},[_vm._v(" "+_vm._s(el.label)+" ")])],1)])}),0)],2)],2)}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./TreeNode.vue?vue&type=template&id=3fc1d1d6&
+// CONCATENATED MODULE: ./TreeNode.vue?vue&type=template&id=09ee1465&
 
 // EXTERNAL MODULE: C:/Users/admin/AppData/Roaming/nvm/v12.13.0/node_modules/@vue/cli-service-global/node_modules/core-js/modules/es.array.for-each.js
 var es_array_for_each = __webpack_require__("aa3d");
@@ -1999,7 +1999,7 @@ var component = normalizeComponent(
         if (el.id !== id) {
           var comp = el.$refs[el.id];
 
-          if (!comp.isHidden) {
+          if (comp && !comp.isHidden) {
             comp.isHidden = true;
           }
         }
