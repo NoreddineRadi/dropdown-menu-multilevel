@@ -1,10 +1,14 @@
 {
   "name": "dropdown-menu",
   "version": "0.1.0",
-  "private": true,
+  "description": "dropdown-menu ",
+  "license": "MIT",
+  "main": "dist/DropdownMenu.umd.min.js",
+  "files": [
+    "dist/*"
+  ],
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
+    "build": "vue build -t lib --name DropdownMenu  TreeNode.vue"
   },
   "dependencies": {
     "core-js": "^3.6.5",
@@ -13,6 +17,11 @@
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.5.0",
     "@vue/cli-service": "^4.5.0",
+    "bootstrap": "^4.6.0",
+    "material-design-icons": "^3.0.1",
     "vue-template-compiler": "^2.6.11"
+  },
+  "peerDependencies": {
+    "bp-vuejs-dropdown": "2.1.1"
   }
 }
