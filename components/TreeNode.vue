@@ -8,10 +8,11 @@
     :isIcon="!hideIcon"
     :class-name="className"
     :ref="id"
+    @clickOnItem="clickOnButton(id)"
   >
     <template slot="btn" class="cursor-pointer d-flex">
       <slot v-if="$slots.btn" name="btn" />
-      <div v-else @click="clickOnButton(id)" class="flex-fill">
+      <div v-else @click="clickOnButton(id)"  class="flex-fill">
         {{ label }}
       </div>
     </template>
@@ -26,8 +27,8 @@
               v-if="el.children.length"
               :list="el.children"
               :label="el.label"
-              :offsetX="el.offsetX || offsetX"
-              :offsetY="el.offsetY || offsetY"
+              :offsetX="el.offsetX "
+              :offsetY="el.offsetY"
               :align="`${el.align || align}`"
               :hideIcon="el.hideIcon || false"
               :className="el.className || className"
@@ -46,6 +47,8 @@
 </template>
 
 <script>
+// eslint-disable-entire-file no-console
+/* eslint-disable no-debugger, no-console */
 import dropdown from 'bp-vuejs-dropdown'
 export default {
   name: 'TreeNode',
@@ -114,7 +117,6 @@ export default {
       })
       this.$emit('clickOnButton')
     },
-    
   },
 };
 </script>

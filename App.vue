@@ -1,11 +1,14 @@
+
 <template>
   <div id="app">
-    <div class="ml-5 w-25  my-div">
+    <div>
+      <div class="d-flex justify-content-center">
+      <div class="w-25">
       <TreeNode
         role="" 
         :list="listItems"
-        :offsetX="10" 
-        :offsetY="4"
+        :offsetX="14" 
+        :offsetY="-4"
         hideIcon
         className="my-class" 
         classNameChild="my-class-child"
@@ -14,12 +17,13 @@
         <span slot="btn" class="material-icons">more_vert</span>
       </TreeNode>
     </div>
+    </div>
+    </div>
   </div>
 </template>
 
 <script>
 import TreeNode from './TreeNode.vue';
-
 export default {
   name: 'App',
   props: {
@@ -30,14 +34,14 @@ export default {
   data() {
     return {
       listItems: [{
-        label: 'action 1', icon: 'palette', align: 'right', children: [{ label: 'action 1 - level 1', align: 'right', children: [] }],
+        label: 'action long', icon: 'palette', align: 'right', children: [{ label: 'action 1 - level 1', icon: 'home', align: 'right', children: [] }],
       },
       {
         label: 'action 2',
         icon: 'home',
         align: 'left',
         children: [
-          { label: 'action 1 - level 1', align: 'right', children: [{ label: 'action 1 - level 2', align: 'right', children: [] }] },
+          { label: 'action 1 - level 1 noradi', align: 'right', offsetX: 14,  children: [{ label: 'action 1 - level 2', align: 'right', children: [] }] },
           {
             label: 'action 2 - level 1',
             align: 'right',
@@ -52,7 +56,7 @@ export default {
       {
         label: 'action 3', icon: 'wb_auto', align: 'right', children: [{ label: 'action 3 - level 1', align: 'right', children: [] }],
       },
-      { label: 'action 4', align: 'right', children: [] }],
+      { label: 'action 4', align: 'right', icon: 'delete', children: [] }],
     }
   }, 
   methods: {
@@ -84,12 +88,10 @@ export default {
 .my-class-bp__btn--active {
   background: #fff;
 }
-
 .my-class-bp__body {
   width: 12rem; 
   padding: 0.6rem; 
   font-size: 1rem;
   min-height: 5rem;
 }
-
 </style>
