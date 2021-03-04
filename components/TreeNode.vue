@@ -49,7 +49,7 @@
 <script>
 // eslint-disable-entire-file no-console
 /* eslint-disable no-debugger, no-console */
-import dropdown from 'bp-vuejs-dropdown'
+import dropdown from './Dropdown.vue'
 export default {
   name: 'TreeNode',
   components: {
@@ -74,7 +74,7 @@ export default {
     },
     align: {
       type: String,
-      default: '',
+      default: 'bottom',
     },
     offsetX: {
       type: Number,
