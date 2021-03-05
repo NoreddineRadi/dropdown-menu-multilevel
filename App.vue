@@ -1,14 +1,15 @@
 <template>
   <div id="app">
-    <div class="wrapper">
+    <div class="alert bg-info w-100 fixed-bottom" @contextmenu="contextMenu">is an allert</div>
+    <div class="">
+      
       <div class="d-flex justify-content-start">
         <div class="">
           <TreeNode
-            role=""
+            ref="myContextMenu"
+            asContextMenu
+            trigger="hover"
             :list="listItems"
-            :offsetX="0"
-            :offsetY="0"
-            align="bottom"
             hideIcon
             className="my-class"
             classNameChild="my-class-child"
@@ -24,6 +25,8 @@
 
 <script>
 import TreeNode from "./components/TreeNode.vue";
+// eslint-disable-entire-file no-console
+/* eslint-disable no-debugger, no-console */
 export default {
   name: "App",
   props: {},
@@ -32,16 +35,19 @@ export default {
   },
   data() {
     return {
+      positions: {
+        x: 0,
+        y: 0,
+      },
       listItems: [
         {
           label: "action long",
           icon: "palette",
-          align: "bottom",
+          align: "",
           children: [
             {
               label: "action 1 - level 1",
               icon: "home",
-              align: "right",
               children: [],
             },
           ],
@@ -49,7 +55,7 @@ export default {
         {
           label: "action 2",
           icon: "home",
-          align: "left",
+          align: "right",
           children: [
             {
               label: "action 1 - level 1 noradi",
@@ -83,10 +89,15 @@ export default {
           align: "bottom",
           children: [
             {
-              label: "action 1 - level 1",
+              label: "action 1 - level 1 hello",
+              icon: "home",
+              align: "right",
+              children: [{
+              label: "action 1 - level 1 hello",
               icon: "home",
               align: "right",
               children: [],
+            }],
             },
           ],
         },
@@ -95,12 +106,11 @@ export default {
         {
           label: "action 3",
           icon: "wb_auto",
-          align: "right",
           children: [
-            { label: "action 3 - level 1", align: "right", children: [] },
+            { label: "action 3 - level 1", children: [] },
           ],
         },
-        { label: "action 4", align: "right", icon: "delete", children: [] },
+        { label: "action 4", icon: "delete", children: [] },
       ],
     };
   },
@@ -109,6 +119,14 @@ export default {
       // eslint-disable-next-line no-console
       console.log("item app", el);
     },
+    contextMenu(e) {
+      this.$refs.myContextMenu.$children[0].isHidden = false
+      this.$refs.myContextMenu.$children[0].$nextTick(()=> {
+       this.$refs.myContextMenu.$children[0].top = e.clientY
+      this.$refs.myContextMenu.$children[0].left = e.clientX
+     }, this)
+      e.preventDefault()
+    }
   },
 };
 </script>
@@ -131,7 +149,8 @@ export default {
 }
 .wrapper {
   position: absolute;
-  bottom: 10px
+  bottom: 0;
+  right: 400px
 }
 .my-class-bp__btn--active {
   background: #fff;

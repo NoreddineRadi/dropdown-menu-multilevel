@@ -64,7 +64,10 @@ export default {
       type: String,
       default: "",
     },
-
+    asContextMenu: {
+      type: Boolean,
+      default: false
+    },
     unscroll: {
       type: [HTMLElement, String],
       default: null,
@@ -72,9 +75,8 @@ export default {
 
     align: {
       type: String,
-      default: "bottom",
+      default: "right",
     },
-
     x: {
       type: Number,
       default: 0,
@@ -118,10 +120,8 @@ export default {
     return {
       isHidden: true,
       isLoading: false,
-
       id: null,
       timeout: null,
-      bodyPosition: "",
       top: undefined,
       right: undefined,
       bottom: undefined,
@@ -143,17 +143,30 @@ export default {
         }
       }
     },
+    left(nVal) {
+      if(this.asContextMenu) {
+        const screenWidth = document.documentElement.clientWidth || window.innerWidth
+        const body = document.getElementById(this.id);
+        if (body.offsetWidth + nVal > screenWidth) {
+          this.left = screenWidth-body.offsetWidth
+        }
+      }
+    },
+    top(nVal) {
+      if(this.asContextMenu) {
+        const screenHeight = document.documentElement.clientHeight || window.innerHeight
+        const body = document.getElementById(this.id);
+        if (body.offsetHeight + nVal > screenHeight) {
+          this.top = nVal - body.offsetHeight
+        }
+      }
+    }
   },
 
   created() {
     const $root = this.$root;
-    this.bodyPosition = this.align;
-    // --- hide dropdown if other dropdowns show
-    // --- or document clicked
     $root.$on("bp-dropdown:open", () => (this.isHidden = true));
     $root.$on("bp-dropdown:hide", () => (this.isHidden = true));
-
-    // --- hide dropdown on document click event
     if (this.trigger === "click" && !$root["is-bp-dropdown"]) {
       Object.defineProperty($root, "is-bp-dropdown", {
         enumerable: false,
@@ -178,28 +191,23 @@ export default {
   },
 
   methods: {
-    // --- generate random id for query selector
     generateRandomId() {
       return Math.random()
         .toString(36)
         .substr(2, 10);
     },
-
     _onToggle(e) {
       if (this.trigger !== "click") {
         return;
       }
       this.checkCustomCallback(e);
     },
-
     _onBtnEnter(e) {
       if (this.trigger !== "hover" || !this.isHidden) {
         return;
       }
-
       this.checkCustomCallback(e);
     },
-
     _onBtnLeave(e) {
       if (this.trigger !== "hover") {
         return;
@@ -208,79 +216,61 @@ export default {
       if (this.role) {
         this.timeout = setTimeout(() => (this.isHidden = true), 100);
       }
-
       const to = e.toElement;
       if (!to) {
         return;
       }
-
       const isDropdown =
         to.closest(".bp-dropdown__btn") || to.closest(".bp-dropdown__body");
       if (isDropdown) {
         return;
       }
-
       this.prepare();
     },
-
     _onBodyClick() {
       if (this.closeOnClick) {
         this.isHidden = true;
       }
     },
-
     _onBodyEnter() {
       if (this.timeout) {
         clearTimeout(this.timeout);
       }
     },
-
     _onBodyLeave(e) {
       if (this.trigger !== "hover") {
         return;
       }
-
       const to = e.toElement;
       if (!to) {
         return;
       }
-
       if (to.closest(".bp-dropdown__btn") || to.closest(".bp-dropdown__sub")) {
         return;
       }
-
       this.prepare();
     },
-
     checkCustomCallback(e) {
       if (!this.isHidden) {
         this.prepare();
         return;
       }
-
-      // --- custom callback before open
       const promise = new Promise((resolve) => {
         this.isLoading = true;
         this.beforeOpen.call(this, resolve);
       });
-
       promise.then(() => {
         this.isLoading = false;
         if (!e.target.closest(".bp-dropdown__body")) {
-          // --- hide dropdown if other dropdowns show
           this.$root.$emit("bp-dropdown:open");
         }
-
         setTimeout(this.prepare, 0);
       });
-
       promise.catch(() => {
         throw Error("bp-dropdown promise error");
       });
     },
-
     prepare() {
-      console.log("prepare", this);
       this.isHidden = !this.isHidden;
       this.$emit("clickOnItem", this.isHidden);
       if (!this.isHidden) {
@@ -298,83 +288,70 @@ export default {
         });
       }
     },
-
     setWidth(width) {
-      console.log("set width");
       this.width = width;
     },
-
     setPosition(btn, body, parent) {
       if (!parent || !btn || !body) {
         return;
       }
-
       const coords = this.getCoords(parent);
       const btnCoords = this.getCoords(btn);
-      // --- current position
       const currentTop = btnCoords.top;
       const currentLeft = coords.left;
-
-      // --- btn size
       const btnWidth = parent.offsetWidth;
       const btnHeight = btn.offsetHeight;
 
-      // --- body size
       const bodyWidth = body.offsetWidth;
       const bodyHeight = body.offsetHeight;
-
       let bodyPosition;
       const btnGeometrics = btn.getBoundingClientRect();
       const bodyGeometrics = body.getBoundingClientRect();
-      console.log("$____*ALIGN$__$", this.align, currentTop, btnHeight );
-      console.log("btnGeometrics", btnGeometrics);
-      console.log("bodyGeometrics", bodyGeometrics);
+      const bodyIsTottalyShowY = btnGeometrics.bottom + bodyGeometrics.height + this.y <= (document.documentElement.clientHeight || window.innerHeight)
+      const bodyIsTottalyShowX = btnGeometrics.left + btnGeometrics.width + bodyGeometrics.width + this.x <= (document.documentElement.clientWidth || window.innerWidth)
+      
       if (
         this.align === 'right' &&
-        btnGeometrics.right + btnGeometrics.width + this.x >
-        window.innerWidth
+        btnGeometrics.right + bodyGeometrics.width + this.x >
+        (document.documentElement.clientWidth || window.innerWidth)
       ) {
         bodyPosition = "left";
-      } else if (this.align === 'left' && btnGeometrics.left - bodyGeometrics.width <= 0) {
+      } else if (this.align === 'left' && btnGeometrics.left - bodyGeometrics.width + this.x <= 0) {
         bodyPosition = "right";
-      } else if (this.align === 'top' && btnGeometrics.top - bodyGeometrics.height <= 0) {
+      } else if (this.align === 'top' && btnGeometrics.top - bodyGeometrics.height + this.y <= 0) {
         bodyPosition = "bottom";
-      } else if (this.align === 'bottom' && btnGeometrics.bottom + bodyGeometrics.height > (document.documentElement.clientHeight || window.innerHeight)) {
+      } else if (this.align === 'bottom' && !bodyIsTottalyShowY) {
         bodyPosition = "top";
       } 
       else {
-        bodyPosition = this.align;
-      }
 
+        bodyPosition = this.align
+      }
       switch (bodyPosition) {
         case "top":
-          this.top = currentTop + pageYOffset - bodyHeight;
-          this.left = currentLeft + pageXOffset;
+          this.top = bodyIsTottalyShowY ? currentTop + pageYOffset : currentTop + pageYOffset - bodyHeight;
+          this.left = bodyIsTottalyShowX ? currentLeft + pageXOffset :  currentLeft + pageXOffset - ( currentLeft > 0 && this.align !== bodyPosition ? bodyWidth : 0) +  (currentLeft > 0 && this.align !== bodyPosition ? btnWidth : 0)
           break;
         case "right":
-          this.top = currentTop + pageYOffset;
-          this.left = currentLeft + pageXOffset + btnWidth;
+          this.top = bodyIsTottalyShowY ? currentTop + pageYOffset : currentTop + pageYOffset - bodyHeight + btnHeight;
+          this.left = bodyIsTottalyShowX ? currentLeft + pageXOffset + btnWidth : currentLeft + pageXOffset + btnWidth
           break;
         case "bottom":
-          this.top = currentTop + pageYOffset+ btnHeight;
-          this.left = currentLeft + pageXOffset;
+          this.top = bodyIsTottalyShowY ? currentTop + pageYOffset+ btnHeight : currentTop + pageYOffset - bodyHeight;
+          this.left = bodyIsTottalyShowX ? currentLeft + pageXOffset : currentLeft + pageXOffset - ( currentLeft > 0 && this.align === bodyPosition ? bodyWidth : 0) +  (currentLeft > 0 && this.align === bodyPosition ? btnWidth : 0);
           break;
         case "left":
-          this.top = currentTop + pageYOffset;
-          this.left = currentLeft + pageXOffset - bodyWidth;
+          this.top = bodyIsTottalyShowY ? currentTop + pageYOffset : currentTop + pageYOffset - bodyHeight + btnHeight;
+          this.left = bodyIsTottalyShowX ? currentLeft + pageXOffset - btnWidth: currentLeft + pageXOffset - bodyWidth;
           break;
         default:
           this.top = currentTop + pageYOffset + btnHeight;
           this.left = currentLeft + pageXOffset;
           break;
       }
-
       this.top += this.y;
       this.left += this.x;
-      console.log('top', this.top);
-      console.log('left', this.left);
     },
-
     getCoords(el) {
       el = el.getBoundingClientRect();
       return {

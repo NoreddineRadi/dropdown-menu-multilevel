@@ -1,20 +1,23 @@
 <template>
   <dropdown
     :role="role"
-    :align="align"
+    :align="align || 'right'"
     :x="offsetX"
     :y="offsetY"
     :trigger="trigger"
     :isIcon="!hideIcon"
     :class-name="className"
     :ref="id"
+    :asContextMenu="asContextMenu"
     @clickOnItem="clickOnButton(id)"
   >
     <template slot="btn" class="cursor-pointer d-flex">
+      <template v-if="!asContextMenu">
       <slot v-if="$slots.btn" name="btn" />
-      <div v-else @click="clickOnButton(id)"  class="flex-fill">
+      <div v-else @click="clickOnButton(id)" class="flex-fill">
         {{ label }}
       </div>
+      </template>
     </template>
     <template slot="body">
       <slot v-if="$slots.body" name="body" />
@@ -29,7 +32,7 @@
               :label="el.label"
               :offsetX="el.offsetX "
               :offsetY="el.offsetY"
-              :align="`${el.align || align}`"
+              :align="el.align || 'right'"
               :hideIcon="el.hideIcon || false"
               :className="el.className || className"
               :trigger="trigger"
@@ -74,7 +77,7 @@ export default {
     },
     align: {
       type: String,
-      default: 'bottom',
+      default: 'right',
     },
     offsetX: {
       type: Number,
@@ -96,6 +99,10 @@ export default {
       type: String,
       default: 'class-name',
     },
+    asContextMenu: {
+      type: Boolean,
+      default: false
+    }
   },
   methods: {
     beforOpen(resolve) {
