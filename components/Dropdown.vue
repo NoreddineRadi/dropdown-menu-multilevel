@@ -165,8 +165,8 @@ export default {
 
   created() {
     const $root = this.$root;
-    $root.$on("bp-dropdown:open", () => (this.isHidden = true));
-    $root.$on("bp-dropdown:hide", () => (this.isHidden = true));
+    // $root.$on("bp-dropdown:open", () => (this.isHidden = true));
+    // $root.$on("bp-dropdown:hide", () => (this.isHidden = true));
     if (this.trigger === "click" && !$root["is-bp-dropdown"]) {
       Object.defineProperty($root, "is-bp-dropdown", {
         enumerable: false,
@@ -214,7 +214,7 @@ export default {
       }
 
       if (this.role) {
-        this.timeout = setTimeout(() => (this.isHidden = true), 100);
+        this.timeout = setTimeout(() => (this.isHidden = true), 50);
       }
       const to = e.toElement;
       if (!to) {

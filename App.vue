@@ -1,25 +1,47 @@
 <template>
-  <div id="app">
-    <div class="alert bg-info w-100 fixed-bottom" @contextmenu="contextMenu">is an allert</div>
-    <div class="">
-      
-      <div class="d-flex justify-content-start">
+  <div id="app" class="d-flex">
+    <div class="row w-100 wrapper">
+      <div class="col col-sm-2 d-flex justify-content-start">
         <div class="">
           <TreeNode
-            ref="myContextMenu"
-            asContextMenu
-            trigger="hover"
+            class="mx-3"
             :list="listItems"
-            hideIcon
             className="my-class"
-            classNameChild="my-class-child"
+            label="Dropdown"
+            @clickOnItem="clickOnItem($event)"
+            iconName="home"
+          >
+          </TreeNode>
+        </div>
+      </div>
+      <div class="col col-sm-8 alert bg-secondary " @contextmenu="contextMenu">Right click to see the contextMenu !</div>
+      <div class="col col-sm-2 d-flex justify-content-end">
+        <div class="">
+          <TreeNode
+            class="mx-3"
+            :list="listItems"
+            hideChevron
+            trigger="hover"
             @clickOnItem="clickOnItem($event)"
           >
-            <span slot="btn" class="material-icons">more_vert</span>
+          <span slot="btn-main" class="material-icons">more_vert</span>
           </TreeNode>
         </div>
       </div>
     </div>
+    <div class="d-flex justify-content-start">
+        <TreeNode
+          ref="myContextMenu"
+          asContextMenu
+          trigger="hover"
+          :list="listItems"
+          className="my-class-menu"
+          classNameChild="my-class-child"
+          @clickOnItem="clickOnItem($event)"
+         >
+          <span slot="btn" class="material-icons">more_vert</span>
+        </TreeNode>
+      </div>
   </div>
 </template>
 
@@ -110,7 +132,7 @@ export default {
             { label: "action 3 - level 1", children: [] },
           ],
         },
-        { label: "action 4", icon: "delete", children: [] },
+        { label: "action 4", icon: "delete", className: 'single', children: [] },
       ],
     };
   },
@@ -140,20 +162,22 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
+.wrapper {
+  height: 150px
+}
+
 .my-class {
   padding: 5px;
 }
 .my-class-bp__btn {
-  border: none;
-  background: white;
+  background: lightgray;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer
+
 }
-.wrapper {
-  position: absolute;
-  bottom: 0;
-  right: 400px
-}
-.my-class-bp__btn--active {
-  background: #fff;
+.single {
+  padding-left: 2em;
 }
 .my-class-bp__body {
   width: 12rem;

@@ -5,41 +5,44 @@
     :x="offsetX"
     :y="offsetY"
     :trigger="trigger"
-    :isIcon="!hideIcon"
+    :isIcon="asContextMenu ? false : !hideChevron"
     :class-name="className"
     :ref="id"
     :asContextMenu="asContextMenu"
     @clickOnItem="clickOnButton(id)"
+    v-click-outside="clickOutSide"
   >
     <template slot="btn" class="cursor-pointer d-flex">
       <template v-if="!asContextMenu">
-      <slot v-if="$slots.btn" name="btn" />
-      <div v-else @click="clickOnButton(id)" class="flex-fill">
-        {{ label }}
-      </div>
+        <slot v-if="$slots['btn-main']" name="btn-main" />
+        <div v-else @click="clickOnButton(id)" class="d-flex align-items-center">
+          <span class="material-icons mr-2">{{ iconName }}</span>
+           <span>{{ label }}</span>
+        </div>
       </template>
     </template>
     <template slot="body">
       <slot v-if="$slots.body" name="body" />
       <div v-else>
-        <div v-for="(el, index) in list" :key="el+index">
+        <div v-for="(el, index) in list" :key="el + index">
           <div class="text-left d-flex align-items-center cursor-pointer p-1">
-            <span class="material-icons mr-2">{{ el.icon }}</span>
             <TreeNode
-              :id="el.label"
+              :id="'Tree-node' + el.label"
               v-if="el.children.length"
               :list="el.children"
               :label="el.label"
-              :offsetX="el.offsetX "
+              :offsetX="el.offsetX"
               :offsetY="el.offsetY"
               :align="el.align || 'right'"
-              :hideIcon="el.hideIcon || false"
-              :className="el.className || className"
+              :hideChevron="el.hideChevron || false"
+              :className="el.className"
+              :iconName="el.icon"
+              role="sublist"
               :trigger="trigger"
               @clickOnButton="clickOnButton(id)"
               @clickOnItem="clickOnItem($event)"
             />
-            <div :class="className" v-else @click="clickOnItem(el.label)">
+            <div :class="el.className" v-else @click="clickOnItem(el.label)">
               {{ el.label }}
             </div>
           </div>
@@ -52,11 +55,12 @@
 <script>
 // eslint-disable-entire-file no-console
 /* eslint-disable no-debugger, no-console */
-import dropdown from './Dropdown.vue'
+import dropdown from "./Dropdown.vue";
+import clickOutside from './directives/clickOutside';
 export default {
-  name: 'TreeNode',
+  name: "TreeNode",
   components: {
-    dropdown
+    dropdown,
   },
   props: {
     list: {
@@ -65,19 +69,19 @@ export default {
     },
     id: {
       type: String,
-      default: 'main-dropdown',
+      default: "Tree-node-main-dropdown",
     },
     role: {
       type: String,
-      default: 'sublist',
+      default: "sublist",
     },
     label: {
       type: String,
-      default: 'dropDown',
+      default: "dropDown",
     },
     align: {
       type: String,
-      default: 'right',
+      default: "right",
     },
     offsetX: {
       type: Number,
@@ -89,27 +93,35 @@ export default {
     },
     trigger: {
       type: String,
-      default: 'click',
+      default: "click",
     },
-    hideIcon: {
+    hideChevron: {
       type: Boolean,
       default: false,
     },
     className: {
       type: String,
-      default: 'class-name',
+      default: "",
+    },
+    iconName: {
+      type: String,
+      default: "",
     },
     asContextMenu: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   methods: {
     beforOpen(resolve) {
       this.$emit('beforOpen', resolve);
     },
+    clickOutSide() {
+       const main = this.$refs["Tree-node-main-dropdown"];
+       main && (main.isHidden = true);
+    },
     clickOnItem(el) {
-      const main = this.$refs['main-dropdown'];
+      const main = this.$refs['Tree-node-main-dropdown'];
       main && (main.isHidden = true);
       this.$emit('clickOnItem', el);
     },
@@ -121,10 +133,16 @@ export default {
             comp.isHidden = true
           }
         }
-      })
-      this.$emit('clickOnButton')
+      });
+      this.$emit('clickOnButton');
     },
   },
+  directives: {
+    'click-outside': clickOutside,
+  },
+  created() {
+    console.log('classname', this.className);
+  }
 };
 </script>
 <style lang="scss">
