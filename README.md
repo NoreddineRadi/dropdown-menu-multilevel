@@ -1,4 +1,3 @@
-
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
@@ -15,8 +14,6 @@
   </p>
 </p>
 
-
-
 <!-- TABLE OF CONTENTS -->
 <details open="open">
   <summary>Table of Contents </summary>
@@ -30,7 +27,6 @@
     <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
@@ -38,91 +34,144 @@
   </ol>
 </details>
 
-
-
 <!-- ABOUT THE PROJECT -->
+
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
-
-There are many great README templates available on GitHub, however, I didn't find one that really suit my needs so I created this enhanced one. I want to create a README template so amazing that it'll be the last one you ever need -- I think this is it.
+There are many great dropdown menu available on NPM, however, I didn't find one that really suit my needs so I created this enhanced one.
 
 Here's why:
-* Your time should be focused on creating something amazing. A project that solves a problem and helps others
-* You shouldn't be doing the same tasks over and over like creating a README from scratch
-* You should element DRY principles to the rest of your life :smile:
 
-Of course, no one template will serve all projects since your needs may be different. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue. Thanks to all the people have have contributed to expanding this template!
+- You shouldn't spend your time to position the menu when is in the end of the screen. You can also use you own style.
+- You can implement several menu levels. (each menu can have a sub menu up to infinity)
+- You have the possibility to use it as a context menu ( in this case, the two characteristics mentioned above are also included)
 
-A list of commonly used resources that I find helpful are listed in the acknowledgements.
+[![Product Name Screen Shot][product-screenshot]]()
+![](https://typito.com/share/qRJJdq8E)
+
+<video width="550" height="240" controls>
+  <source src="https://g-gs.typito.com/export/f2a87b2c-ad9c-4fa1-bfa1-82093a3c3b48/previews/dash/manifest.mpd" type="application/dash+xml">
+</video>
+
+
+<video width="550" height="240" controls>
+  <source src="dropdown-video" type="video/mp4">
+</video>
 
 ### Built With
 
-This section should list any major frameworks that you built your project using. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
-* [Bootstrap](https://getbootstrap.com)
-* [JQuery](https://jquery.com)
-* [Laravel](https://laravel.com)
-
-# Installation
-
-<p align="center">
-  
-
-</p>
-
-```sh 
-npm install my component
-```
+- [VueJs](https://vuejs.org)
+- [Bootstrap](https://getbootstrap.com)
+- [Material Design Icons](https://material.io/resources)
+- [bp-vuejs-dropdown](https://brandquad.github.io/bp-vuejs-demo/#/dropdown)
 
 <!-- GETTING STARTED -->
+
 ## Getting Started
 
 This is an example of how you may give instructions on setting up your project locally.
 To get a local copy up and running follow these simple example steps.
 
-### Prerequisites
-
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
-
 ### Installation
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
+1. NPM
    ```sh
-   git clone https://github.com/your_username_/Project-Name.git
+   npm install dropdown-menu-multilevel
    ```
-3. Install NPM packages
+2. YARN
    ```sh
-   npm install
+   yarn add dropdown-menu-multilevel
    ```
-4. Enter your API in `config.js`
-   ```JS
-   const API_KEY = 'ENTER YOUR API';
-   ```
-
-
 
 <!-- USAGE EXAMPLES -->
+
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+- As dropdown
 
-_For more examples, please refer to the [Documentation](https://example.com)_
+```html
+<template>
+  <DpMultilevel
+    :list="listItems"
+    className="my-class"
+    label="Dropdown"
+    @clickOnItem="clickOnItem($event)"
+  >
+  </DpMultilevel>
+</template>
 
+<script>
+  import DpMultilevel from 'dropdown-menu-multilivel'
+  export default {
+    components: {DpMultilevel},
+    data() {
+      return: {
+        listItems: [{
+          label: "action 1",
+          icon: "palette",
+          align: "",
+          children: [{
+              label: "sub-action",
+              className:"sub-action"
+              children: [{
+                icon: "edit"
+                label: "sub-sub-action 1 ",
+                children: []
+                },
+              {
+                label: "sub-sub-action 2",
+                children: []
+              }]
+            }],
+          },
+          {
+           label: "action 2",
+           icon: "delete",
+           className: 'single',
+           children: []
+          },
+        ]
+      }
+    },
+    methods: {
+       clickOnItem(el) {
+      console.log("item app", el);
+    },
+    }
+  }
+</script>
 
-
-<!-- ROADMAP -->
-## Roadmap
-
-See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a list of proposed features (and known issues).
-
-
+<style lang="css">
+  .my-class-bp__btn {
+    background: lightgray;
+    padding: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  .single {
+    padding-left: 2em;
+  }
+  .my-class-bp__body {
+    width: 12rem;
+    padding: 0.6rem;
+    font-size: 1rem;
+    min-height: 5rem;
+  }
+  .sub-action-bp__btn {
+    padding: 8px;
+    cursor: pointer;
+  }
+  .sub-action-bp__body {
+    width: 13rem;
+    padding: 0.7rem;
+    font-size: 1.3rem;
+    min-height: 7rem;
+  }
+</style>
+```
 
 <!-- CONTRIBUTING -->
+
 ## Contributing
 
 Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
@@ -133,44 +182,41 @@ Contributions are what make the open source community such an amazing place to b
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-
-
 <!-- LICENSE -->
+
 ## License
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
-
-
 <!-- CONTACT -->
+
 ## Contact
 
 Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.com
 
 Project Link: [https://github.com/your_username/repo_name](https://github.com/your_username/repo_name)
 
-
-
 <!-- ACKNOWLEDGEMENTS -->
+
 ## Acknowledgements
-* [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
-* [Img Shields](https://shields.io)
-* [Choose an Open Source License](https://choosealicense.com)
-* [GitHub Pages](https://pages.github.com)
-* [Animate.css](https://daneden.github.io/animate.css)
-* [Loaders.css](https://connoratherton.com/loaders)
-* [Slick Carousel](https://kenwheeler.github.io/slick)
-* [Smooth Scroll](https://github.com/cferdinandi/smooth-scroll)
-* [Sticky Kit](http://leafo.net/sticky-kit)
-* [JVectorMap](http://jvectormap.com)
-* [Font Awesome](https://fontawesome.com)
+
+- [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
+- [Img Shields](https://shields.io)
+- [Choose an Open Source License](https://choosealicense.com)
+- [GitHub Pages](https://pages.github.com)
+- [Animate.css](https://daneden.github.io/animate.css)
+- [Loaders.css](https://connoratherton.com/loaders)
+- [Slick Carousel](https://kenwheeler.github.io/slick)
+- [Smooth Scroll](https://github.com/cferdinandi/smooth-scroll)
+- [Sticky Kit](http://leafo.net/sticky-kit)
+- [JVectorMap](http://jvectormap.com)
+- [Font Awesome](https://fontawesome.com)
 
 https://gitlab.inf.rtbf.be/devtec/commons/js/vue/dropdown-menu.git
 
-
-
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+
 [contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
 [contributors-url]: https://github.com/othneildrew/Best-README-Template/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=for-the-badge
@@ -184,7 +230,6 @@ https://gitlab.inf.rtbf.be/devtec/commons/js/vue/dropdown-menu.git
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/othneildrew
 [product-screenshot]: images/screenshot.png
-
 [bp-vuejs-dropdown]: https://github.com/borisbutenko/bp-vuejs-dropdown
-[Bootstrap]: https://getbootstrap.com/
+[bootstrap]: https://getbootstrap.com/
 [material-design-icons]: https://material.io/resources/icons/
