@@ -25,12 +25,12 @@
       <slot v-if="$slots.body" name="body" />
       <div v-else>
         <div v-for="(el, index) in list" :key="el + index">
-          <div class="text-left d-flex align-items-center cursor-pointer p-1">
+          <div v-if="el.label" class="text-left d-flex align-items-center cursor-pointer p-1">
             <TreeNode
               :id="'Tree-node' + el.label"
-              v-if="el.children.length"
+              v-if="el.children && el.children.length"
               :list="el.children"
-              :label="el.label"
+              :label="el.label "
               :offsetX="el.offsetX"
               :offsetY="el.offsetY"
               :align="el.align || 'right'"
@@ -42,8 +42,9 @@
               @clickOnButton="clickOnButton(id)"
               @clickOnItem="clickOnItem($event)"
             />
-            <div :class="el.className" v-else @click="clickOnItem(el.label)">
-              {{ el.label }}
+            <div :class="el.className" v-else   @click="clickOnItem(el.label)" class="d-flex align-items-center">
+              <span class="material-icons mr-2">{{ el.icon }}</span>
+              <span>{{ el.label }}</span>
             </div>
           </div>
         </div>
@@ -77,7 +78,10 @@ export default {
     },
     label: {
       type: String,
-      default: "dropDown",
+      validator(v) {
+        return !!v
+      },
+      required: true,
     },
     align: {
       type: String,
@@ -140,9 +144,6 @@ export default {
   directives: {
     'click-outside': clickOutside,
   },
-  created() {
-    console.log('classname', this.className);
-  }
 };
 </script>
 <style lang="scss">

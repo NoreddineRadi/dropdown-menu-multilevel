@@ -1,17 +1,8 @@
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-  <h3 align="center">Dropdown menu multi level</h3>
-  <p align="center">
-    <a href="https://gitlab.com/Noradi/dropdown-menu-multi-level"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
-    <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a>
-    ·
-    <a href="https://gitlab.com/Noradi/dropdown-menu-multi-level/-/issues">Report Bug</a>
-    ·
-    <a href="https://gitlab.com/Noradi/dropdown-menu-multi-level/-/issues">Request Feature</a>
-  </p>
+  <h1 align="center">Dropdown menu multi level</h1>
+  
 </p>
 
 <!-- TABLE OF CONTENTS -->
@@ -30,7 +21,14 @@
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
-    <li><a href="#usage">Usage</a></li>
+    <li>
+      <a href="#usage">Usage</a>
+      <ul>
+        <li><a href="#import">How to import</a></li>
+        <li><a href="#context-menu">As context-menu</a></li>
+        <li><a href="#dropdown">As dropdown</a></li>
+      </ul>
+    </li>
   </ol>
 </details>
 
@@ -46,18 +44,18 @@ Here's why:
 - You can implement several menu levels. (each menu can have a sub menu up to infinity)
 - You have the possibility to use it as a context menu ( in this case, the two characteristics mentioned above are also included)
 
-[![Product Name Screen Shot][product-screenshot]]()
-![](https://typito.com/share/qRJJdq8E)
-
-<video width="550" height="240" controls>
-  <source src="https://g-gs.typito.com/export/f2a87b2c-ad9c-4fa1-bfa1-82093a3c3b48/previews/dash/manifest.mpd" type="application/dash+xml">
-</video>
 
 
-<video width="550" height="240" controls>
+<div align="center">
+<img src="./dropdwon-example.gif" width="500" height="300" />
+</div>
+
+
+
+<!-- <video width="550" height="240" controls>
   <source src="dropdown-video" type="video/mp4">
 </video>
-
+ -->
 ### Built With
 
 - [VueJs](https://vuejs.org)
@@ -87,40 +85,70 @@ To get a local copy up and running follow these simple example steps.
 
 ## Usage
 
-- As dropdown
+<h3 id="import">
+ 1. How to import
+</h3>
+
+* Localy
+   ```sh
+   import bpContextMenu from "dropdown-menu-multilevel";
+   ```
+* Globaly
+   ```sh
+   import Vue from 'vue';
+   import bpContextMenu from "dropdown-menu-multilevel";
+
+   Vue.use('bpContextMenu')
+
+   ```
+
+
+<h3 id="context-menu">
+ 2. As Context-menu
+</h3>
 
 ```html
 <template>
-  <DpMultilevel
-    :list="listItems"
-    className="my-class"
-    label="Dropdown"
-    @clickOnItem="clickOnItem($event)"
-  >
-  </DpMultilevel>
+  <div id="app">
+    <div class="row w-100 wrapper">
+      <div class="col col-sm-8 alert bg-secondary " @contextmenu="contextMenu">Right click to see the contextMenu !</div>
+    </div>
+    <bpContextMenu
+      ref="myContextMenu"
+      asContextMenu
+      trigger="hover"
+      label="Dropdown-right"
+      :list="listItems"
+      @clickOnItem="clickOnItem($event)"
+    >
+    </bpContextMenu>
+  </div>
 </template>
 
 <script>
-  import DpMultilevel from 'dropdown-menu-multilivel'
-  export default {
-    components: {DpMultilevel},
-    data() {
-      return: {
-        listItems: [{
+import bpContextMenu from "dropdown-menu-multilevel";
+
+
+export default {
+  name: "App",
+  components: {
+    bpContextMenu,
+  },
+  data() {
+    return {
+      listItems: [{
           label: "action 1",
           icon: "palette",
           align: "",
           children: [{
               label: "sub-action",
-              className:"sub-action"
+              className:"sub-action",
               children: [{
-                icon: "edit"
+                icon: "edit",
                 label: "sub-sub-action 1 ",
-                children: []
                 },
               {
                 label: "sub-sub-action 2",
-                children: []
               }]
             }],
           },
@@ -128,7 +156,84 @@ To get a local copy up and running follow these simple example steps.
            label: "action 2",
            icon: "delete",
            className: 'single',
-           children: []
+          },
+        ],
+    };
+  },
+  methods: {
+    clickOnItem(el) {
+      console.log("item app", el);
+    },
+    contextMenu(e) {
+      this.$refs.myContextMenu.$children[0].isHidden = false
+      this.$refs.myContextMenu.$children[0].$nextTick(()=> {
+       this.$refs.myContextMenu.$children[0].top = e.clientY
+      this.$refs.myContextMenu.$children[0].left = e.clientX
+     }, this)
+      e.preventDefault()
+    }
+  },
+};
+</script>
+
+<style lang="scss">
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}
+.wrapper {
+  height: 150px
+}
+
+</style>
+```
+<h3 id="dropdown">
+3. As dropdown
+</h3>
+ 
+```html
+<template>
+  <div style="width: 12rem">
+    <DpMultilevel
+    :list="listItems"
+    className="my-class"
+    label="Dropdown"
+    @clickOnItem="clickOnItem($event)"
+  >
+  </DpMultilevel>
+  </div>
+</template>
+
+<script>
+  import DpMultilevel from 'dropdown-menu-multilevel'
+  export default {
+    components: {DpMultilevel},
+    data() {
+      return {
+        listItems: [{
+          label: "action 1",
+          icon: "palette",
+          align: "",
+          children: [{
+              label: "sub-action",
+              className:"sub-action",
+              children: [{
+                icon: "edit",
+                label: "sub-sub-action 1 ",
+                },
+              {
+                label: "sub-sub-action 2",
+              }]
+            }],
+          },
+          {
+           label: "action 2",
+           icon: "delete",
+           className: 'single',
           },
         ]
       }
@@ -147,6 +252,7 @@ To get a local copy up and running follow these simple example steps.
     padding: 8px;
     border-radius: 8px;
     cursor: pointer;
+    width: 35px;
   }
   .single {
     padding-left: 2em;
@@ -170,19 +276,54 @@ To get a local copy up and running follow these simple example steps.
 </style>
 ```
 
-<!-- CONTRIBUTING -->
+## Props 
 
-## Contributing
 
-Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+| Name          |    Type      |  Default | Description |
+|---------------|--------------|----------|-------------|
+| label | string |   | Text content to place on the button.
+| list | array |   | the list of items in the menu.
+| align | string | right | To Position the menu.  value can takes : 'left , right (default), top, bottom'.
+| offsetX | number |  0 | The value (in pixels) of the horizontal translation of the menu in relation to the button.
+| offsetY | number |  0 | The value (in pixels) of the vertical translation of the menu in relation to the button.
+| trigger | string |  click | When the value is 'click' the menu can show only by click on the button. other value is 'hover' in this case the menu is show by hover on button.
+| hideChevron | boolean |  false | When the value is set to true the chevron is hidden. 
+| className | string |    | The name of the class which allows you to add and / or modify the style of your dropdown
+| iconName | string |    | The name of the icon that appears on the left of the label
+| asContextMenu | boolean |  false  | When the value is set to true, you can use it  as context-menu instead of dropdown 
+---------------------------------------------------------------
 
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+* The `list` props is an array of object. each object may have several properties, that most of them were explained just above 'label, offsetX, offsetY ... etc'. the `children` property represent the sub-menu of this item and its role is like the `list` props. each item in the children property may have the item list property. 'label, className, align, offsetX, offsetY, icon, hideChevron and children'. See example below
 
-<!-- LICENSE -->
+* Example
+```js
+list:[
+  {
+    label: "action a",
+    children: [
+      {
+        label: "sub-action 1",
+        className:"sub-action-1",
+        align:"left",
+        offsetX:10,
+        offsetY: 10,
+        icon: "edit",
+        hideChevron: true,
+        children: [
+          { label: "sub-sub-action 1 " },
+          { label: "sub-sub-action 2" }
+        ]
+      },
+      { label: "sub-action 2" }
+    ],
+  },
+  { label: 'action b' },
+  { label: 'action c' },
+  { label: 'action d' },
+  
+
+]
+```
 
 ## License
 
@@ -192,44 +333,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## Contact
 
-Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.com
+Noreddine RADI - [@linkedin](https://www.linkedin.com/in/noreddine-radi-6268b187/) - noreddine_radi@live.fr
 
-Project Link: [https://github.com/your_username/repo_name](https://github.com/your_username/repo_name)
+Project Link: [dropdown-menu-multilevel](https://gitlab.com/Noradi/dropdown-menu-multi-level)
 
-<!-- ACKNOWLEDGEMENTS -->
-
-## Acknowledgements
-
-- [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
-- [Img Shields](https://shields.io)
-- [Choose an Open Source License](https://choosealicense.com)
-- [GitHub Pages](https://pages.github.com)
-- [Animate.css](https://daneden.github.io/animate.css)
-- [Loaders.css](https://connoratherton.com/loaders)
-- [Slick Carousel](https://kenwheeler.github.io/slick)
-- [Smooth Scroll](https://github.com/cferdinandi/smooth-scroll)
-- [Sticky Kit](http://leafo.net/sticky-kit)
-- [JVectorMap](http://jvectormap.com)
-- [Font Awesome](https://fontawesome.com)
-
-https://gitlab.inf.rtbf.be/devtec/commons/js/vue/dropdown-menu.git
-
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-
-[contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
-[contributors-url]: https://github.com/othneildrew/Best-README-Template/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=for-the-badge
-[forks-url]: https://github.com/othneildrew/Best-README-Template/network/members
-[stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=for-the-badge
-[stars-url]: https://github.com/othneildrew/Best-README-Template/stargazers
-[issues-shield]: https://img.shields.io/github/issues/othneildrew/Best-README-Template.svg?style=for-the-badge
-[issues-url]: https://github.com/othneildrew/Best-README-Template/issues
-[license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
-[license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/othneildrew
-[product-screenshot]: images/screenshot.png
-[bp-vuejs-dropdown]: https://github.com/borisbutenko/bp-vuejs-dropdown
-[bootstrap]: https://getbootstrap.com/
-[material-design-icons]: https://material.io/resources/icons/
