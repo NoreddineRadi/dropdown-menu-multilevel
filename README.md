@@ -45,17 +45,7 @@ Here's why:
 - You have the possibility to use it as a context menu ( in this case, the two characteristics mentioned above are also included)
 
 
-
-<div align="center">
-<img src="./dropdwon-example.gif" width="500" height="300" />
-</div>
-
-
-
-<!-- <video width="550" height="240" controls>
-  <source src="dropdown-video" type="video/mp4">
-</video>
- -->
+![ScreenShot](dropdwon-example.gif?raw=true)
 ### Built With
 
 - [VueJs](https://vuejs.org)
@@ -333,7 +323,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## Contact
 
-Noreddine RADI - [@linkedin](https://www.linkedin.com/in/noreddine-radi-6268b187/) - noreddine_radi@live.fr
+Noreddine RADI - [@linkedin](https://www.linkedin.com/in/noreddine-radi-6268b187/) - noreddine.radi@gmail.com
 
-Project Link: [dropdown-menu-multilevel](https://gitlab.com/Noradi/dropdown-menu-multi-level)
+Project Link: [dropdown-menu-multilevel](https://github.com/NoreddineRadi/dropdown-menu-multilevel)
 
