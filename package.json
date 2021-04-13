@@ -8,7 +8,7 @@
     "dist/*"
   ],
   "scripts": {
-    "build": "vue build -t lib --name DropdownMenu  TreeNode.vue"
+    "build": "vue build -t lib --name DropdownMenu  ./components/TreeNode.vue"
   },
   "dependencies": {
     "core-js": "^3.6.5",
