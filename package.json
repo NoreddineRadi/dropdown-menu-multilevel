@@ -1,6 +1,6 @@
 {
   "name": "dropdown-menu-multilevel",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "dropdown-menu-multilevel ",
   "license": "MIT",
   "main": "dist/DropdownMenu.umd.min.js",
